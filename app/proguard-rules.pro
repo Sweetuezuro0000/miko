@@ -1,0 +1,7 @@
+# MIKO
+
+-dontwarn kotlin.**
+
+-keep class androidx.compose.** { *; }
+
+-keep class kotlinx.coroutines.** { *; }
