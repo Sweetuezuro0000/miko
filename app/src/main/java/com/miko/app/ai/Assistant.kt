@@ -10,7 +10,11 @@ data class AssistantResponse(
 
 object Assistant {
 
-    fun process(text: String): AssistantResponse {
+    fun process(
+
+        text: String
+
+    ): AssistantResponse {
 
         val command = CommandParser.parse(text)
 
@@ -19,43 +23,61 @@ object Assistant {
             Command.NOTE ->
 
                 AssistantResponse(
-                    ReplyEngine.working(),
+
+                    "Ji, note bana raha hoon.",
+
                     Command.NOTE
+
                 )
 
             Command.DOCUMENT ->
 
                 AssistantResponse(
-                    ReplyEngine.working(),
+
+                    "Ji, documents khol raha hoon.",
+
                     Command.DOCUMENT
+
                 )
 
             Command.REMINDER ->
 
                 AssistantResponse(
-                    ReplyEngine.working(),
+
+                    "Ji, reminder bana raha hoon.",
+
                     Command.REMINDER
+
                 )
 
             Command.SETTINGS ->
 
                 AssistantResponse(
-                    ReplyEngine.working(),
+
+                    "Ji, settings khol raha hoon.",
+
                     Command.SETTINGS
+
                 )
 
             Command.SEARCH ->
 
                 AssistantResponse(
-                    ReplyEngine.working(),
+
+                    "Ji, search kar raha hoon.",
+
                     Command.SEARCH
+
                 )
 
             else ->
 
                 AssistantResponse(
-                    ReplyEngine.error(),
+
+                    "Maaf kijiye, mujhe samajh nahi aaya.",
+
                     Command.UNKNOWN
+
                 )
 
         }
