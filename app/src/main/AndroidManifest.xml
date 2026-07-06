@@ -1,0 +1,16 @@
+<manifest package="com.sweetuezuro0000.miko">
+
+    <application
+        android:label="Miko"
+        android:allowBackup="true">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
