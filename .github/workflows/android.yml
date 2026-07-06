@@ -52,3 +52,6 @@ jobs:
           name: MIKO-APK
 
           path: app/build/outputs/apk/debug/*.apk
+          - name: Find APK
+
+          run: find . -name "*.apk"
