@@ -1,100 +1,119 @@
 package com.miko.app.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import android.content.Context
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.miko.app.ai.Command
+import com.miko.app.ai.CommandParser
+import com.miko.app.ai.ReplyEngine
+import com.miko.app.voice.SpeechRecognizerManager
+import com.miko.app.voice.VoiceManager
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
 
-    var voiceEnabled by remember {
-        mutableStateOf(true)
-    }
+    context: Context
+
+) {
 
     var status by remember {
-        mutableStateOf("🟢 Ji, Main Sun Raha Hoon")
+
+        mutableStateOf("🟢 Ready")
+
+    }
+
+    val voice = remember {
+
+        VoiceManager(context)
+
+    }
+
+    val speech = remember {
+
+        SpeechRecognizerManager(context) { text ->
+
+            if (!text.lowercase().contains("miko"))
+                return@SpeechRecognizerManager
+
+            voice.speak(ReplyEngine.listening())
+
+            status = text
+
+            when (CommandParser.parse(text)) {
+
+                Command.NOTE -> {
+
+                    voice.speak(ReplyEngine.working())
+
+                    status = "📝 Creating Note"
+
+                    voice.speak(ReplyEngine.success())
+
+                }
+
+                Command.DOCUMENT -> {
+
+                    voice.speak(ReplyEngine.working())
+
+                    status = "📂 Opening Documents"
+
+                    voice.speak(ReplyEngine.success())
+
+                }
+
+                Command.REMINDER -> {
+
+                    voice.speak(ReplyEngine.working())
+
+                    status = "🔔 Reminder"
+
+                    voice.speak(ReplyEngine.success())
+
+                }
+
+                else -> {
+
+                    voice.speak(ReplyEngine.error())
+
+                }
+
+            }
+
+        }
+
+    }
+
+    LaunchedEffect(Unit) {
+
+        speech.start()
+
     }
 
     Column(
+
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp),
-
-        verticalArrangement = Arrangement.spacedBy(20.dp),
 
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
 
         Text(
+
             text = "MIKO",
+
             style = MaterialTheme.typography.headlineLarge
+
         )
 
-        Card {
+        Spacer(modifier = Modifier.height(20.dp))
 
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-
-                Text("Status")
-
-                Text(status)
-
-            }
-
-        }
-
-        Card {
-
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-
-                Text("Voice Assistant")
-
-                Switch(
-                    checked = voiceEnabled,
-                    onCheckedChange = {
-
-                        voiceEnabled = it
-
-                        status =
-                            if (it)
-                                "🟢 Listening..."
-                            else
-                                "🔴 Voice Disabled"
-
-                    }
-                )
-
-            }
-
-        }
-
-        Button(
-
-            onClick = {
-
-                status = "✅ Ho Gaya Ji"
-
-            }
-
-        ) {
-
-            Text("Test Reply")
-
-        }
+        Text(status)
 
     }
 
