@@ -6,15 +6,7 @@ import com.miko.app.ui.HomeScreen
 
 @Composable
 fun AppNavigation(
-
     context: Context
-
 ) {
-
-    HomeScreen(
-
-        context
-
-    )
-
+    HomeScreen(context)
 }
