@@ -24,6 +24,19 @@ object ReplyEngine {
         "Ye lijiye.",
         "Done ji."
     )
+    private val greeting = listOf(
+
+    "Namaste ji.",
+
+    "Welcome back ji.",
+
+    "Ji main tayyar hoon.",
+
+    "Boliye."
+
+   )
+
+fun greeting() = greeting.random()
 
     private val error = listOf(
         "Maaf kijiye.",
