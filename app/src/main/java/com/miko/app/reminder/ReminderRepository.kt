@@ -1,13 +1,29 @@
 package com.miko.app.reminder
 
-data class Reminder(
+class ReminderRepository {
 
-    val id: Long = 0,
+    private val reminders = mutableListOf<Reminder>()
 
-    val title: String,
+    fun add(reminder: Reminder) {
 
-    val date: String,
+        reminders.add(reminder)
 
-    val time: String
+    }
 
-)
+    fun getAll(): List<Reminder> {
+
+        return reminders
+
+    }
+
+    fun delete(index: Int) {
+
+        if (index in reminders.indices) {
+
+            reminders.removeAt(index)
+
+        }
+
+    }
+
+}
