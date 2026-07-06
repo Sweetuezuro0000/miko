@@ -1,3 +1,4 @@
-#!/bin/sh
-DIR="$(cd "$(dirname "$0")" && pwd)"
-exec java -classpath "$DIR/gradle/wrapper/gradle-wrapper.jar" org.gradle.wrapper.GradleWrapperMain "$@"
+chmod +x gradlew
+git add gradlew
+git commit -m "fix gradlew permission"
+git push
