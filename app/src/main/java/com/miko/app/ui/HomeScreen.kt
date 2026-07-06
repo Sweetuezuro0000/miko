@@ -1,28 +1,39 @@
 package com.miko.app.ui
 
 import android.content.Context
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.miko.app.ai.Assistant
 import com.miko.app.ai.Command
-import com.miko.app.ai.CommandParser
 import com.miko.app.ai.ReplyEngine
+import com.miko.app.data.AppSettings
 import com.miko.app.voice.SpeechRecognizerManager
 import com.miko.app.voice.VoiceManager
 
 @Composable
 fun HomeScreen(
-
     context: Context
-
 ) {
 
     var status by remember {
 
         mutableStateOf("🟢 Ready")
+
+    }
+
+    var waitingCommand by remember {
+
+        mutableStateOf(false)
 
     }
 
@@ -34,22 +45,50 @@ fun HomeScreen(
 
     val speech = remember {
 
-        SpeechRecognizerManager(context) { text ->
+        SpeechRecognizerManager(context) { result ->
 
-            if (!text.lowercase().contains("miko"))
+            val text = result.lowercase()
+
+            status = result
+
+            if (!AppSettings.voiceEnabled)
                 return@SpeechRecognizerManager
 
-            voice.speak(ReplyEngine.listening())
+            if (!waitingCommand) {
 
-            status = text
+                if (
+                    text == "miko" ||
+                    text == "hey miko" ||
+                    text == "hello miko"
+                ) {
 
-            when (CommandParser.parse(text)) {
+                    waitingCommand = true
+
+                    val reply = ReplyEngine.listening()
+
+                    status = reply
+
+                    if (AppSettings.speakReply)
+                        voice.speak(reply)
+
+                }
+
+                return@SpeechRecognizerManager
+
+            }
+
+            val response = Assistant.process(result)
+
+            status = response.reply
+
+            if (AppSettings.speakReply)
+                voice.speak(response.reply)
+
+            when (response.action) {
 
                 Command.NOTE -> {
 
-                    voice.speak(ReplyEngine.working())
-
-                    status = "📝 Creating Note"
+                    status = "📝 Note Ban Gaya"
 
                     voice.speak(ReplyEngine.success())
 
@@ -57,9 +96,7 @@ fun HomeScreen(
 
                 Command.DOCUMENT -> {
 
-                    voice.speak(ReplyEngine.working())
-
-                    status = "📂 Opening Documents"
+                    status = "📂 Documents Open"
 
                     voice.speak(ReplyEngine.success())
 
@@ -67,9 +104,23 @@ fun HomeScreen(
 
                 Command.REMINDER -> {
 
-                    voice.speak(ReplyEngine.working())
+                    status = "🔔 Reminder Saved"
 
-                    status = "🔔 Reminder"
+                    voice.speak(ReplyEngine.success())
+
+                }
+
+                Command.SETTINGS -> {
+
+                    status = "⚙️ Settings"
+
+                    voice.speak(ReplyEngine.success())
+
+                }
+
+                Command.SEARCH -> {
+
+                    status = "🔍 Searching"
 
                     voice.speak(ReplyEngine.success())
 
@@ -82,6 +133,8 @@ fun HomeScreen(
                 }
 
             }
+
+            waitingCommand = false
 
         }
 
@@ -99,7 +152,9 @@ fun HomeScreen(
             .fillMaxSize()
             .padding(20.dp),
 
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+
+        verticalArrangement = Arrangement.spacedBy(20.dp)
 
     ) {
 
@@ -111,9 +166,41 @@ fun HomeScreen(
 
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Card {
 
-        Text(status)
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+
+                Text(status)
+
+            }
+
+        }
+
+        Card {
+
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+
+                Text("Voice Assistant")
+
+                Switch(
+
+                    checked = AppSettings.voiceEnabled,
+
+                    onCheckedChange = {
+
+                        AppSettings.voiceEnabled = it
+
+                    }
+
+                )
+
+            }
+
+        }
 
     }
 
