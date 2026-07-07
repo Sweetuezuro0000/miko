@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 jobs:
@@ -19,31 +18,29 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Grant Execute Permission
+      - name: Generate Gradle Wrapper
+        run: gradle wrapper
+
+      - name: Make gradlew executable
         run: chmod +x gradlew
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug
 
-      - name: Show Build Folder
-        run: |
-          echo "===== APK Files ====="
-          find . -name "*.apk"
-
-          echo ""
-          echo "===== Build Folder ====="
-          find app/build || true
+      - name: Find APK
+        run: find . -name "*.apk"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: MIKO-APK
-          path: |
-            app/build/outputs/apk/**/*.apk
-            **/*.apk
+          path: '**/*.apk'
           if-no-files-found: error
