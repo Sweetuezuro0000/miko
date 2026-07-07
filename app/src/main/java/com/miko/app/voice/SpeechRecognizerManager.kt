@@ -40,7 +40,9 @@ class SpeechRecognizerManager(
 
         recognizer.setRecognitionListener(object : RecognitionListener {
 
-            override fun onReadyForSpeech(params: Bundle?) {}
+            override fun onReadyForSpeech(params: Bundle?) {
+                onResult("🎤 Listening...")
+            }
 
             override fun onBeginningOfSpeech() {}
 
@@ -55,9 +57,7 @@ class SpeechRecognizerManager(
             override fun onPartialResults(results: Bundle?) {}
 
             override fun onError(error: Int) {
-
-                start()
-
+                onResult("ERROR: $error")
             }
 
             override fun onResults(results: Bundle?) {
