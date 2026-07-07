@@ -175,7 +175,7 @@ Command.TIME -> {
     }
 
     LaunchedEffect(Unit) {
-
+    status = "Starting speech..."
         speech.start()
 
     }
