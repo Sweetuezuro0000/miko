@@ -1,21 +1,5 @@
 package com.miko.app.ai
 
-enum class Command {
-
-    NOTE,
-
-    DOCUMENT,
-
-    REMINDER,
-
-    SETTINGS,
-
-    SEARCH,
-
-    UNKNOWN
-
-}
-
 object CommandParser {
 
     fun parse(text: String): Command {
@@ -25,37 +9,49 @@ object CommandParser {
         return when {
 
             command == "miko" -> Command.UNKNOWN
-
             command == "hello miko" -> Command.UNKNOWN
-
             command == "hey miko" -> Command.UNKNOWN
 
-            "note" in command -> Command.NOTE
+            "flashlight on" in command ||
+            "torch on" in command ||
+            "light on" in command ||
+            "light chalu" in command ||
+            "torch chalu" in command ->
+                Command.FLASHLIGHT_ON
 
-            "notes" in command -> Command.NOTE
+            "flashlight off" in command ||
+            "torch off" in command ||
+            "light band" in command ||
+            "torch band" in command ->
+                Command.FLASHLIGHT_OFF
 
-            "document" in command -> Command.DOCUMENT
+            "time" in command ||
+            "kitne baje" in command ||
+            "samay" in command ->
+                Command.TIME
 
-            "documents" in command -> Command.DOCUMENT
+            "note" in command ||
+            "notes" in command ->
+                Command.NOTE
 
-            "pdf" in command -> Command.DOCUMENT
+            "document" in command ||
+            "documents" in command ||
+            "pdf" in command ->
+                Command.DOCUMENT
 
-            "reminder" in command -> Command.REMINDER
+            "reminder" in command ||
+            "alarm" in command ->
+                Command.REMINDER
 
-            "alarm" in command -> Command.REMINDER
+            "setting" in command ||
+            "settings" in command ->
+                Command.SETTINGS
 
-            "setting" in command -> Command.SETTINGS
-
-            "settings" in command -> Command.SETTINGS
-
-            "search" in command -> Command.SEARCH
-
-            "khojo" in command -> Command.SEARCH
+            "search" in command ||
+            "khojo" in command ->
+                Command.SEARCH
 
             else -> Command.UNKNOWN
-
         }
-
     }
-
 }
