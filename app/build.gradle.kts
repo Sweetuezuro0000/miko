@@ -4,7 +4,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.kotlin.kapt")
 }
-
 android {
     namespace = "com.miko.app"
     compileSdk = 35
