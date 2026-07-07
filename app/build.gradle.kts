@@ -89,6 +89,5 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
-}otlin.plugin.compose")
-    id("org.jetbrains.kotlin.kapt")
+
 }
