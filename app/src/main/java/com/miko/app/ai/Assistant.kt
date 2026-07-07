@@ -69,6 +69,35 @@ object Assistant {
                     Command.SEARCH
 
                 )
+                Command.FLASHLIGHT_ON ->
+
+    AssistantResponse(
+
+        "Ji, flashlight on kar raha hoon.",
+
+        Command.FLASHLIGHT_ON
+
+    )
+
+Command.FLASHLIGHT_OFF ->
+
+    AssistantResponse(
+
+        "Ji, flashlight off kar raha hoon.",
+
+        Command.FLASHLIGHT_OFF
+
+    )
+
+Command.TIME ->
+
+    AssistantResponse(
+
+        "Ji, time batata hoon.",
+
+        Command.TIME
+
+    )
 
             else ->
 
