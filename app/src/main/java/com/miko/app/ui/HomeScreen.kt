@@ -19,6 +19,10 @@ import com.miko.app.ai.ReplyEngine
 import com.miko.app.data.AppSettings
 import com.miko.app.voice.SpeechRecognizerManager
 import com.miko.app.voice.VoiceManager
+import com.miko.app.utils.FlashlightManager
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun HomeScreen(
@@ -41,6 +45,9 @@ fun HomeScreen(
 
         VoiceManager(context)
 
+    }
+    val flashlight = remember {
+    FlashlightManager(context)
     }
 
     val speech = remember {
@@ -125,6 +132,33 @@ fun HomeScreen(
                     voice.speak(ReplyEngine.success())
 
                 }
+                Command.FLASHLIGHT_ON -> {
+
+    flashlight.on()
+
+    status = "🔦 Flashlight ON"
+
+    voice.speak("Flashlight on kar di.")
+}
+
+Command.FLASHLIGHT_OFF -> {
+
+    flashlight.off()
+
+    status = "🔦 Flashlight OFF"
+
+    voice.speak("Flashlight off kar di.")
+}
+
+Command.TIME -> {
+
+    val time = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        .format(Date())
+
+    status = "🕒 $time"
+
+    voice.speak("Abhi time hai $time")
+}
 
                 else -> {
 
